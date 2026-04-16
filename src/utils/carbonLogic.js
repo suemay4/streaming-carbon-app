@@ -1,0 +1,56 @@
+// src/utils/carbonLogic.js
+
+// Malaysia grid emission factors (kg CO2e / kWh) from Suruhanjaya Tenaga / Energy Commission
+// 2022–2024 provisional GEF (Gg CO2e/GWh) ÷ 1000 → kg CO2e/kWh
+// https://myenergystats.st.gov.my/documents/d/guest/grid-emission-factor-gef-in-malaysia-2022-2024-provisional-
+
+export const REGION_FACTORS = {
+  'Peninsular Malaysia': 0.740,
+  'Sabah': 0.539,
+  'Sarawak': 0.199
+};
+
+// Empirical: kWh/GB for data centers + networks (global average band, not Malaysia‑specific)
+// Common range in literature: ~0.01–0.1 kWh/GB
+
+const ENERGY_INTENSITY_DC = 0.012;  // kWh/GB
+const ENERGY_INTENSITY_NET = 0.015; // kWh/GB
+
+
+const DATA_RATES = { 
+  '360p': 0.3, 
+  '720p': 1.2, 
+  '1080p': 2.25, 
+  '4K': 8.0 
+};
+
+const DEVICE_POWER = { 
+  'Smartphone': 4, 
+  'Laptop': 40, 
+  '4K TV': 120 
+};
+
+export const calculateFootprint = (durationMinutes, resolution, device, region) => {
+  const hours = durationMinutes / 60;
+
+  const dataRateGBh = DATA_RATES[resolution] || 0.3;
+  const dataGB = DATA_RATES[resolution] * hours;
+
+  const gridFactor = REGION_FACTORS[region] || 0.740;
+
+  const eDc = dataGB * ENERGY_INTENSITY_DC;
+  const eNet = dataGB * ENERGY_INTENSITY_NET;
+  const eDevice = (DEVICE_POWER[device] / 1000) * hours;
+  
+  const totalKWh = eDc + eNet + eDevice;
+  const carbonGrams = totalKWh * gridFactor * 1000;
+  
+  return {
+    total: parseFloat(carbonGrams.toFixed(2)),
+    breakdown: {
+      dc: parseFloat((eDc * gridFactor * 1000).toFixed(2)),
+      net: parseFloat((eNet * gridFactor * 1000).toFixed(2)),
+      device: parseFloat((eDevice * gridFactor * 1000).toFixed(2))
+    }
+  };
+};
