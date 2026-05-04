@@ -30,6 +30,17 @@ const DEVICE_POWER = {
   '4K TV': 120 
 };
 
+export const projectEmissions = (sessionGrams, frequency, period) => {
+  // frequency is how many times per period (e.g., 5 times a week)
+  const multiplier = period === 'Weekly' ? frequency : frequency * 30; // Monthly estimate
+  const total = sessionGrams * multiplier;
+  
+  return {
+    periodTotal: parseFloat(total.toFixed(2)),
+    annualTotal: parseFloat((total * (period === 'Weekly' ? 52 : 12) / 1000).toFixed(2)) // in kg
+  };
+};
+
 export const calculateFootprint = (durationMinutes, resolution, device, region) => {
   const hours = durationMinutes / 60;
 
