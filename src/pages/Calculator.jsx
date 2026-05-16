@@ -10,7 +10,6 @@ import { EmissionBreak } from '../components/EmissionBreak';
 import { ImpactDashboard } from '../components/ImpactDashboard';
 import { BenchmarkCompare } from '../components/BenchmarkCompare';
 import { generateCarbonReport } from '../utils/pdfGenerator';
-
 import { DeviceComparison } from '../components/DeviceComparison';
 
 function Calculator() {
@@ -174,7 +173,7 @@ function Calculator() {
             error={error}
             resolution={resolution} setResolution={setResolution}
             device={device} setDevice={setDevice}
-            onCalculate={handleCalculate}
+            onReset={handleReset} onCalculate={handleCalculate}
             frequency={frequency} setFrequency={setFrequency}
             period={period} setPeriod={setPeriod}
           />
