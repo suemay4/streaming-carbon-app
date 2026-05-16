@@ -92,7 +92,7 @@ function HowItWorks() {
         
         <div className="space-y-4">
           {/* Data Center */}
-          <div className="flex flex-col md:flex-row gap-5 p-6 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all">
+          <div className="flex flex-col md:flex-row gap-5 p-6 bg-white rounded-2xl border border-slate-100 transition-all">
             <div className="p-3 bg-blue-50 text-blue-600 rounded-xl self-start">
               <Server size={24} />
             </div>
@@ -109,7 +109,7 @@ function HowItWorks() {
           </div>
 
           {/* Network Transmission */}
-          <div className="flex flex-col md:flex-row gap-5 p-6 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all">
+          <div className="flex flex-col md:flex-row gap-5 p-6 bg-white rounded-2xl border border-slate-100 transition-all">
             <div className="p-3 bg-purple-50 text-purple-600 rounded-xl self-start">
               <Share2 size={24} />
             </div>
@@ -128,7 +128,7 @@ function HowItWorks() {
           </div>
 
           {/* End-user Device */}
-          <div className="flex flex-col md:flex-row gap-5 p-6 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all">
+          <div className="flex flex-col md:flex-row gap-5 p-6 bg-white rounded-2xl border border-slate-100 transition-all">
             <div className="p-3 bg-orange-50 text-orange-600 rounded-xl self-start">
               <Laptop size={24} />
             </div>
@@ -190,15 +190,15 @@ function HowItWorks() {
           <Laptop className="text-emerald-500" size={22} />
           Estimated Power Use by Device
         </h2>
-        <p className="text-slate-600 text-sm leading-relaxed">
-          Device power constraints are governed by active energy profiles configured inside the platform environment model:
+        <p className="text-slate-600 text-xl leading-relaxed">
+          Device electricity use is estimated using average power consumption values for common devices such as smartphones, laptops, tablets, and TVs.
         </p>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Smartphone</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">3.5W</div></div>
           <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Tablet</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">7.0W</div></div>
           <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Mid-Spec Laptop</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">32.5W</div></div>
-          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Smart TV (4K)</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">120.0W</div></div>
+          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Smart TV</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">120.0W</div></div>
         </div>
       </div>
 
@@ -206,37 +206,41 @@ function HowItWorks() {
       <div className="space-y-6">
         <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
           <Globe className="text-emerald-500" size={22} />
-          4. Regional Grid Localization (EF<sub>grid</sub>)
+          Regional Grid Localization (EF<sub>grid</sub>)
         </h2>
-        <p className="text-slate-600 text-sm leading-relaxed">
-          Energy consumption totals are converted into greenhouse gas masses ($kg\ CO_2e/kWh$) using official provisional tracking numbers 
-          sourced from the <span className="font-semibold text-slate-900">Energy Commission (Suruhanjaya Tenaga)</span>:
+        <p className="text-slate-600 text-xl leading-relaxed">
+          Energy consumption totals are converted into greenhouse gas masses (kg CO₂e/kWh) using official provisional tracking numbers sourced from the{" "}
+          <a
+            href="https://myenergystats.st.gov.my/documents/d/guest/grid-emission-factor-gef-in-malaysia-2022-2024-provisional-"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-slate-900 hover:underline"
+          >
+          Energy Commission (Suruhanjaya Tenaga)
+          </a>
+          :
         </p>
 
-        <div className="overflow-hidden border border-slate-100 rounded-xl bg-white">
-          <table className="w-full text-left border-collapse text-sm">
+        <div className="overflow-hidden border border-slate-200 rounded-xl bg-white">
+          <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-100 text-slate-700 font-semibold">
+              <tr className="bg-slate-100 border-b border-slate-200 text-slate-700 font-semibold">
                 <th className="p-4">Region / Grid Zone</th>
-                <th className="p-4 text-right">Emission Factor (kg CO₂e / kWh)</th>
-                <th className="p-4">Primary Energy Generation Mix</th>
+                <th className="p-4">Emission Factor (kg CO₂e / kWh)</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50 text-slate-600">
-              <tr className="hover:bg-slate-50/50">
-                <td className="p-4 font-medium text-slate-900">Peninsular Malaysia</td>
-                <td className="p-4 text-right font-mono font-semibold text-slate-900">0.740</td>
-                <td className="p-4 text-xs">High fossil-fuel reliance (Coal & Natural Gas base loads)</td>
+            <tbody className="divide-y divide-slate-100 text-slate-600">
+              <tr>
+                <td className="p-4 font-medium text-center text-slate-900">Peninsular Malaysia</td>
+                <td className="p-4 font-mono text-center font-semibold text-slate-900">0.740</td>
               </tr>
-              <tr className="hover:bg-slate-50/50">
-                <td className="p-4 font-medium text-slate-900">Sabah</td>
-                <td className="p-4 text-right font-mono font-semibold text-slate-900">0.539</td>
-                <td className="p-4 text-xs">Mixed grid distribution (Natural Gas, Solar, and Medium Hydro)</td>
+              <tr>
+                <td className="p-4 font-medium text-center text-slate-900">Sabah</td>
+                <td className="p-4 font-mono text-center font-semibold text-slate-900">0.539</td>
               </tr>
-              <tr className="hover:bg-slate-50/50 text-emerald-700 bg-emerald-50/20">
-                <td className="p-4 font-medium text-emerald-900">Sarawak</td>
-                <td className="p-4 text-right font-mono font-semibold text-emerald-900">0.199</td>
-                <td className="p-4 text-xs text-emerald-800 font-medium">Sustainable grid profile (Predominantly Hydroelectric generation)</td>
+              <tr>
+                <td className="p-4 font-medium text-center text-emerald-900">Sarawak</td>
+                <td className="p-4 text-center font-mono font-semibold text-emerald-900">0.199</td>
               </tr>
             </tbody>
           </table>
@@ -247,33 +251,39 @@ function HowItWorks() {
       <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 space-y-4">
         <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
           <Info className="text-slate-500" size={20} />
-          Academic Boundary Conditions & Assumptions
+          Important Notes & Assumptions
         </h3>
-        <ul className="list-disc pl-5 text-xs text-slate-600 space-y-3 leading-relaxed">
+        <ul className="list-disc pl-5 text-s text-slate-600 space-y-3 leading-relaxed">
           <li>
-            <strong className="text-slate-800">Operational System Boundaries:</strong> Calculations focus purely on operation-phase power draw (dynamic impacts). Embodied carbon cost structures (device manufacturing logistics and hardware end-of-life disposal tracks) fall completely outside the scope of this research.
+            <strong className="text-slate-800">Electricity-based estimates only:</strong> This calculator estimates emissions from electricity used during streaming only.
+              It does not include emissions from manufacturing devices or data center construction.
           </li>
           <li>
-            <strong className="text-slate-800">Network Simplification Targets:</strong> Network intensity assumptions map generalized macro averages ($kWh/GB$). It treats data transmission path complexities identically regardless of real geographic routing paths between servers and end-user access hubs.
+            <strong className="text-slate-800">Network estimates are simplified:</strong> Internet energy use is calculated using global average values per GB of data,
+              not exact real-time routing or ISP-specific data.
           </li>
           <li>
-            <strong className="text-slate-800">Hardware Wattage Normalization:</strong> Operating consumption rates assume median manufacturer hardware targets, excluding variances caused by extreme display screen brightness or secondary background multi-tasking workloads.
+            <strong className="text-slate-800">Device usage is estimated:</strong> Power consumption is based on typical device profiles (phone, laptop, TV, etc.)
+              and may vary depending on brightness, background apps, and hardware conditions.
+          </li>
+          <li>
+            <strong className="text-slate-800">Results are estimated:</strong> Values are designed for comparison and awareness, not precise scientific measurement.
           </li>
         </ul>
       </div>
 
-      {/* 8. BIBLIOGRAPHIC CITATIONS */}
+      {/* 8. BIBLIOGRAPHIC CITATIONS
       <div className="space-y-4">
-        <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2 uppercase tracking-wider text-slate-500">
+        <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2 uppercase tracking-wider text-slate-600">
           <BookOpen size={16} />
-          Scholarly Citations & Baselines
+          Citations & Baselines
         </h3>
         <ol className="list-decimal pl-5 text-[11px] text-slate-500 space-y-2 font-mono">
           <li>Malaysian Energy Commission (Suruhanjaya Tenaga). Grid Emission Factors for Peninsular Malaysia, Sabah and Sarawak.</li>
           <li>International Energy Agency (IEA). Energy Intensity of Digital Services and Streaming Network Frameworks. Technical Report.</li>
           <li>Aslan, J., Mayers, K., Koomey, J. G., & France, C. Electricity Intensity of Internet Data Transmission: Untangling the Estimates. Journal of Industrial Ecology.</li>
         </ol>
-      </div>
+      </div> */}
     </div>
   );
 }
