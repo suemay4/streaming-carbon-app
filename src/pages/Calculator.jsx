@@ -64,7 +64,7 @@ function Calculator() {
     
       alert(`Successfully analyzed: ${data.title}`);
     } catch (err) {
-      alert("Could not analyze link.");
+      alert("Could not analyze link. Please paste a valid public YouTube link.");
     } finally {
       setIsAnalyzing(false);
     }

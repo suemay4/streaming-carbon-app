@@ -19,7 +19,7 @@ export function CalculatorForm({
       {/* Add this above the location selector */}
       <div className="mb-8">
         <label className="block text-sm font-bold text-slate-500 mb-3 uppercase flex items-center gap-2">
-          <Link size={16}/> Paste Video Link (YouTube/Vimeo)
+          <Link size={16}/> Paste Video Link (YouTube)
         </label>
         <div className="flex gap-2">
           <input 
