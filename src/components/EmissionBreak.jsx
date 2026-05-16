@@ -7,7 +7,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 export function EmissionBreak({ result, chartData }) {
   return (
-    <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 text-white shadow-2xl min-h-[600px] border border-slate-800/50 flex flex-col">
+    <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 text-white shadow-2xl min-h-[600px] border border-slate-800/50 flex flex-col justify-start space-y-4">
       {result ? (
         <>
           <div className="text-center mb-6">
@@ -20,8 +20,8 @@ export function EmissionBreak({ result, chartData }) {
           </div>
 
           {/* Chart Container - Fixed sizing to keep text inside */}
-          <div className="relative flex justify-center items-center mb-10 h-64 w-full">
-            <div className="w-full h-full">
+          <div className="relative flex-grow flex-1 h-0 min-h-[180px] w-full flex justify-center items-center my-2">
+            <div className="w-full h-full max-h-[260px]">
               <Doughnut 
                 data={chartData} 
                 options={{ 
@@ -55,7 +55,7 @@ export function EmissionBreak({ result, chartData }) {
           </div>
 
           {/* Detailed Breakdown Cards */}
-          <div className="grid grid-cols-1 gap-3 flex-grow">
+          <div className="grid grid-cols-1 gap-3 w-full shrink-0">
             <EmissionItem 
               label="End-User Device" 
               description="Local power usage"

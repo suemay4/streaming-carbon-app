@@ -122,6 +122,7 @@ function Calculator() {
     setCustomBitrate(null);
     setFrequency(1);
     setRegion('Peninsular Malaysia');
+    setVideoTitle('');
   };
 
   // Logic to generate chart data for the sidebar
@@ -150,6 +151,7 @@ function Calculator() {
             onReset={handleReset} onCalculate={handleCalculate}
             frequency={frequency} setFrequency={setFrequency}
             period={period} setPeriod={setPeriod}
+            videoTitle={videoTitle}
           />
 
           <EmissionBreak result={result} chartData={chartData}/>

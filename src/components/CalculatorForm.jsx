@@ -12,7 +12,8 @@ export function CalculatorForm({
   onCalculate, error,
   frequency, setFrequency,
   period, setPeriod,
-  metadata, onReset
+  metadata, onReset,
+  videoTitle
 }) {
   // Local state to track which tab is active: 'auto' or 'manual'
   const [activeTab, setActiveTab] = useState('auto');
@@ -92,7 +93,7 @@ export function CalculatorForm({
           </p>
 
           {/* --- NEW: DYNAMIC EXTRACTED METADATA DISPLAY --- */}
-          {!isAnalyzing && mins > 1 && (
+          {!isAnalyzing && videoTitle && (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) &&(
             <div className="mt-4 bg-white p-4 rounded-xl border border-emerald-200 shadow-sm space-y-3 animate-fade-in">
               <div className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold w-max uppercase tracking-wider">
                 Extracted Metadata Success
@@ -101,7 +102,7 @@ export function CalculatorForm({
               <div className="space-y-1">
                 <span className="text-[11px] text-slate-400 block font-bold uppercase">Video Title</span>
                 <p className="text-sm font-bold text-slate-800 line-clamp-1">
-                  {metadata?.videoTitle || metadata?.title || "Parsed YouTube Resource Stream"}
+                  {videoTitle || metadata?.videoTitle || metadata?.title || "Parsed YouTube Resource Stream"}
                 </p>
               </div>
 
