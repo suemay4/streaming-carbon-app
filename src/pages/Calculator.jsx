@@ -1,14 +1,17 @@
 import React, { useState } from 'react'; //useRef
-import { calculateFootprint, REGION_FACTORS } from '../utils/carbonLogic';
-// import html2canvas from 'html2canvas';
-// import jsPDF from 'jspdf';
+import { calculateFootprint, REGION_FACTORS, DEVICE_PROFILES } from '../utils/carbonLogic';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import domtoimage from 'dom-to-image-more';
 
 // Import your new subcomponents
 import { CalculatorForm } from '../components/CalculatorForm';
 import { EmissionBreak } from '../components/EmissionBreak';
 import { ImpactDashboard } from '../components/ImpactDashboard';
 import { BenchmarkCompare } from '../components/BenchmarkCompare';
-// import { CarbonReport } from '../components/CarbonReport';
+import { generateCarbonReport } from '../utils/pdfGenerator';
+
+import { DeviceComparison } from '../components/DeviceComparison';
 
 function Calculator() {
   // const reportRef = useRef(null);
@@ -24,6 +27,48 @@ function Calculator() {
   const [projection, setProjection] = useState(null);
   const [benchmarkData, setBenchmark] = useState([]);
   const [error, setError] = useState('');
+  const [videoUrl, setVideoUrl] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [customBitrate, setCustomBitrate] = useState(null);
+  const [videoTitle, setVideoTitle] = useState('');
+
+  const handleAnalyze = async () => {
+    if (!videoUrl) return;
+    setIsAnalyzing(true);
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:5000/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: videoUrl })
+      });
+
+      if (!response.ok) throw new Error('Analysis failed');
+
+      const data = await response.json();
+      console.log("Backend Data Received:", data) // check f12 for this
+
+      // Auto-update your state variables with real data!
+      if (data.durationMins) {
+        setVideoTitle(data.title);
+        setMins(data.durationMins);
+        setCustomBitrate(data.bitrateKbps);
+        alert(`Detected: ${data.title}`);
+      }
+    
+      // Logic to match the resolution to your existing dropdown options
+      if (data.resolution.includes('2160') || data.resolution.includes('4K')) setResolution('4K');
+      else if (data.resolution.includes('1080')) setResolution('1080p');
+      else setResolution('720p');
+    
+      alert(`Successfully analyzed: ${data.title}`);
+    } catch (err) {
+      alert("Could not analyze link.");
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   // 2. The Main Action Handler
   const handleCalculate = () => {
@@ -35,7 +80,7 @@ function Calculator() {
     setError('');
 
     // Session math
-    const sessionData = calculateFootprint(mins, resolution, device, region);
+    const sessionData = calculateFootprint(mins, resolution, device, region, customBitrate);
     
     // Benchmark math (Comparing to other qualities)
     const scenarios = [
@@ -66,24 +111,44 @@ function Calculator() {
     });
   };
 
-  // const generatePDF = async () => {
-  //   const element = reportRef.current;
-  //   if (!element) return;
+  
 
-  //   const canvas = await html2canvas(element, { scale: 2, useCORS: true });
-  //   const imgData = canvas.toDataURL('image/png');
-  //   const pdf = new jsPDF('p', 'mm', 'a4');
-  //   const pdfWidth = pdf.internal.pageSize.getWidth();
-  //   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  /*const handleDownloadPDF = async () => {
+    const reportElement = document.getElementById('pdf-report-template');
+    if (!reportElement) return;
 
-  //   pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-  //   pdf.save(`Carbon_Report_${region}.pdf`);
-  // };
+    alert("Generating clean academic report...");
+
+    try {
+      // We capture the HIDDEN template, not the dashboard
+      const dataUrl = await domtoimage.toPng(reportElement, {
+        width: 800,
+        bgcolor: '#ffffff',
+      });
+
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const imgProps = pdf.getImageProperties(dataUrl);
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`Carbon_Report_${new Date().getTime()}.pdf`);
+    
+      alert("Report Downloaded Successfully!");
+    } catch (error) {
+      console.error("PDF Error:", error);
+      alert("Could not generate report template.");
+    }
+  };*/
 
   const handleReset = () => {
     setResult(null);
     setProjection(null);
     setMins(0);
+    setVideoUrl('');
+    setCustomBitrate(null);
+    setFrequency(1);
+    setRegion('Peninsular Malaysia');
   };
 
   // Logic to generate chart data for the sidebar
@@ -97,51 +162,77 @@ function Calculator() {
   } : null;
 
   return (
-    <div className="py-12 px-6 max-w-7xl mx-auto space-y-12">
-      {/* Hidden Template for PDF
-      <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
-        <CarbonReport 
-          ref={reportRef} 
-          result={result} 
-          projection={projection} 
-          region={region} 
-        />
-      </div> */}
+    <div style={{ backgroundColor: '#ffffff', color: '#1e293b' }} className="py-12 px-6 max-w-7xl mx-auto space-y-12">
 
       {/* TIER 1: The Input and the Gauge */}
-      <div className="grid lg:grid-cols-2 gap-8 items-stretch">
-        <CalculatorForm 
-          region={region} setRegion={setRegion}
-          mins={mins} setMins={setMins}
-          error={error}
-          resolution={resolution} setResolution={setResolution}
-          device={device} setDevice={setDevice}
-          onCalculate={handleCalculate}
-          frequency={frequency} setFrequency={setFrequency}
-          period={period} setPeriod={setPeriod}
-        />
-        
-        <EmissionBreak result={result} chartData={chartData}/>
-      </div>
-
-      {/* TIER 2: The Detailed Analysis (Only visible after calculation) */}
-      {result && projection && benchmarkData.length > 0 && (
-        <div className="grid lg:grid-cols-2 gap-8">
-          <ImpactDashboard projection={projection} />
-          <BenchmarkCompare
-            benchmarkData={benchmarkData} 
-            currentYearly={parseFloat(projection.yearly)} 
+        <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+            <CalculatorForm 
+            videoUrl={videoUrl} setVideoUrl={setVideoUrl}
+            onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing}
+            region={region} setRegion={setRegion}
+            mins={mins} setMins={setMins}
+            error={error}
+            resolution={resolution} setResolution={setResolution}
+            device={device} setDevice={setDevice}
+            onCalculate={handleCalculate}
+            frequency={frequency} setFrequency={setFrequency}
+            period={period} setPeriod={setPeriod}
           />
-        </div>
-      )}
 
+          <EmissionBreak result={result} chartData={chartData}/>
+        </div>
+
+        {/* TIER 2: The Detailed Analysis (Only visible after calculation) */}
+        {result && projection && benchmarkData.length > 0 && (
+          <div className="space-y-12">
+        
+            <div className="grid lg:grid-cols-2 gap-8">
+              <ImpactDashboard projection={projection} />
+              <BenchmarkCompare
+                benchmarkData={benchmarkData}
+                currentYearly={parseFloat(projection.yearly)} 
+              />
+            </div>
+        
+            {/* TIER 3: Device Comparison (The Third Row) */}
+            <div className="w-full">
+              <DeviceComparison
+                mins={mins}
+                resolution={resolution}
+                region={region}
+                currentDevice={device}
+                calculateFootprint={calculateFootprint}
+              />
+            </div>
+          </div>
+        )}
+      
       {result && (
-        <div className="flex justify-center">
-          {/* <button onClick={generatePDF} className="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black text-xl shadow-xl hover:bg-blue-600 transition-all uppercase tracking-widest">
-            Download PDF Report
-          </button> */}
-          <button onClick={handleReset} className="text-slate-400 hover:text-slate-600 font-bold uppercase text-xs tracking-widest transition-colors">
-             Reset All Data
+        <div className="mt-8 flex flex-col sm:flex-row gap-4 border-t pt-6 border-slate-100">
+          <button
+            onClick={handleReset}
+            className="flex-1 py-4 px-6 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-all uppercase text-sm tracking-wider"
+          >
+            Reset Calculator
+          </button>
+    
+          <button
+            onClick={() => {
+              const deviceComp = DEVICE_PROFILES.map(d => ({
+                name: d.name,
+                total: calculateFootprint(mins, resolution, d.name, region, customBitrate).total
+              }));
+
+              // This triggers the generator with all required data
+              generateCarbonReport(
+                result, projection, 
+                { videoTitle, region, resolution, device, mins }, 
+                benchmarkData, deviceComp     // Used for Section 3
+              );
+            }}
+            className="flex-1 py-4 px-6 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 shadow-lg shadow-green-200 transition-all uppercase text-sm tracking-wider"
+          >
+            Save as PDF Report
           </button>
         </div>
       )}

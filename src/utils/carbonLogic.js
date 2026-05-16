@@ -10,11 +10,27 @@ export const REGION_FACTORS = {
   'Sarawak': 0.199
 };
 
+export const DEVICE_PROFILES = [
+  { name: 'Smartphone', power: 5 },
+  { name: 'Tablet', power: 15 },
+  { name: 'Laptop', power: 32.5 },
+  { name: 'Desktop PC', power: 110 },
+  { name: 'Smart TV', power: 200 }
+];
+
+// Dynamic Resolution configuration
+export const RESOLUTION_PROFILES = [
+  { label: '360p (SD)', value: '360p', rate: 0.3 },
+  { label: '720p (HD)', value: '720p', rate: 1.2 },
+  { label: '1080p (FHD)', value: '1080p', rate: 2.25 },
+  { label: '4K (UHD)', value: '4K', rate: 8.0 }
+];
+
 // Empirical: kWh/GB for data centers + networks (global average band, not Malaysia‑specific)
 // Common range in literature: ~0.01–0.1 kWh/GB
 
-const ENERGY_INTENSITY_DC = 0.012;  // kWh/GB
-const ENERGY_INTENSITY_NET = 0.015; // kWh/GB
+const ENERGY_INTENSITY_DC = 0.015;  // kWh/GB
+const ENERGY_INTENSITY_NET = 0.06; // kWh/GB before 0.015
 
 
 const DATA_RATES = { 
@@ -22,12 +38,6 @@ const DATA_RATES = {
   '720p': 1.2, 
   '1080p': 2.25, 
   '4K': 8.0 
-};
-
-const DEVICE_POWER = { 
-  'Smartphone': 4, 
-  'Laptop': 40, 
-  '4K TV': 120 
 };
 
 export const projectEmissions = (sessionGrams, frequency, period) => {
@@ -41,23 +51,39 @@ export const projectEmissions = (sessionGrams, frequency, period) => {
   };
 };
 
-export const calculateFootprint = (durationMinutes, resolution, device, region) => {
+export const calculateFootprint = (durationMinutes, resolution, device, region, customBitrate = null) => {
   const hours = durationMinutes / 60;
+  const deviceProfile = DEVICE_PROFILES.find(d => d.name === device) || { power: 32.5 }; 
+  const devicePower = deviceProfile.power;
 
-  const dataRateGBh = DATA_RATES[resolution] || 0.3;
-  const dataGB = DATA_RATES[resolution] * hours;
+  const resProfile = RESOLUTION_PROFILES.find(r => r.value === resolution) || { rate: 0.3 };
+  const dataRateGBh = resProfile.rate;
+
+  let dataGB;
+  if (customBitrate) {
+    // 1. Convert minutes to seconds
+    const durationSeconds = durationMinutes * 60;
+
+    // 2. Calculate GB
+    // Formula: (kbps * seconds) / (8 bits * 1024 KB * 1024 MB)
+    dataGB = (customBitrate * durationSeconds) / (8 * 1024 * 1024);
+  } else {
+    // Fallback remains the same as it is already in GB/hour
+    dataGB = (RESOLUTION_PROFILES.find(r => r.value === resolution)?.rate || 0.3) * hours;
+  }
 
   const gridFactor = REGION_FACTORS[region] || 0.740;
 
   const eDc = dataGB * ENERGY_INTENSITY_DC;
   const eNet = dataGB * ENERGY_INTENSITY_NET;
-  const eDevice = (DEVICE_POWER[device] / 1000) * hours;
+  const eDevice = (devicePower / 1000) * hours;
   
   const totalKWh = eDc + eNet + eDevice;
   const carbonGrams = totalKWh * gridFactor * 1000;
   
   return {
     total: parseFloat(carbonGrams.toFixed(2)),
+    dataUsedGB: parseFloat(dataGB.toFixed(3)),
     breakdown: {
       dc: parseFloat((eDc * gridFactor * 1000).toFixed(2)),
       net: parseFloat((eNet * gridFactor * 1000).toFixed(2)),

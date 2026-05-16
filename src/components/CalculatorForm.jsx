@@ -1,8 +1,10 @@
 import React from 'react';
-import { Globe, Clock, HdIcon, MonitorSmartphone, CalculatorIcon, CalendarDays } from 'lucide-react';
-import { REGION_FACTORS } from '../utils/carbonLogic';
+import { Globe, Clock, HdIcon, MonitorSmartphone, CalculatorIcon, CalendarDays, Link } from 'lucide-react';
+import { REGION_FACTORS, DEVICE_PROFILES, RESOLUTION_PROFILES } from '../utils/carbonLogic';
 
 export function CalculatorForm({ 
+  videoUrl, setVideoUrl,
+  onAnalyze, isAnalyzing,
   region, setRegion, 
   mins, setMins, 
   resolution, setResolution, 
@@ -14,6 +16,34 @@ export function CalculatorForm({
   return (
     <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
       <h2 className="text-2xl font-bold mb-8 text-slate-800">Tell us about your streaming habits</h2>
+      {/* Add this above the location selector */}
+      <div className="mb-8">
+        <label className="block text-sm font-bold text-slate-500 mb-3 uppercase flex items-center gap-2">
+          <Link size={16}/> Paste Video Link (YouTube/Vimeo)
+        </label>
+        <div className="flex gap-2">
+          <input 
+            type="text"
+            value={videoUrl} 
+            onChange={(e) => setVideoUrl(e.target.value)}
+            placeholder="https://www.youtube.com/watch?v=..."
+            className="flex-1 p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-green-500"
+          />
+          <button 
+            onClick={onAnalyze}
+            disabled={isAnalyzing}
+            className="bg-slate-900 text-white px-4 rounded-xl font-bold hover:bg-slate-700 transition-all"
+          >
+            {isAnalyzing ? '...' : 'Analyze'}
+          </button>
+        </div>
+      </div>
+
+      <div className="border-t border-slate-100 my-8 pt-8">
+        <h2 className="text-xl font-bold mb-6 text-slate-800">Or enter details manually</h2>
+        {/* Your existing location, duration, and resolution fields here */}
+      </div>
+
       <div className="space-y-8">
         <div>
           <label className="block text-sm font-bold text-slate-500 mb-3 uppercase flex items-center gap-2">
@@ -43,18 +73,27 @@ export function CalculatorForm({
         <div className="grid grid-cols-2 gap-6">
           <div>
             <label className="flex gap-2 items-center text-sm font-bold text-slate-500 mb-3 uppercase"><HdIcon size={16}/> Quality</label>
-            <select value={resolution} onChange={(e) => setResolution(e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl">
-              <option value="360p">360p (SD)</option>
-              <option value="1080p">1080p (FHD)</option>
-              <option value="4K">4K (UHD)</option>
+            <select 
+              value={resolution} 
+              onChange={(e) => setResolution(e.target.value)} 
+              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl"
+            >
+              {RESOLUTION_PROFILES.map((res) => (
+                <option key={res.value} value={res.value}>{res.label}</option>
+              ))}
             </select>
           </div>
           <div>
             <label className="flex items-center gap-2 text-sm font-bold text-slate-500 mb-3 uppercase"><MonitorSmartphone size={16}/> Device</label>
-            <select value={device} onChange={(e) => setDevice(e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl">
-              <option>Smartphone</option>
-              <option>Laptop</option>
-              <option>4K TV</option>
+            <select 
+              value={device} 
+              onChange={(e) => setDevice(e.target.value)} 
+              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl"
+            >
+              {/* DYNAMIC MAPPING */}
+              {DEVICE_PROFILES.map((d) => (
+                <option key={d.name} value={d.name}>{d.name}</option>
+              ))}
             </select>
           </div>
         </div>

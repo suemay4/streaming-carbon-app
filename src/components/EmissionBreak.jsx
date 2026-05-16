@@ -13,7 +13,7 @@ export function EmissionBreak({ result, chartData }) {
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-2 bg-emerald-500/10 px-4 py-1.5 rounded-full border border-emerald-500/20">
               <Leaf size={14} className="text-emerald-400" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400">
+              <span className="text-[12px] font-black uppercase tracking-[0.2em] text-emerald-400">
                 Your Session's Impact
               </span>
             </div>
@@ -45,12 +45,12 @@ export function EmissionBreak({ result, chartData }) {
             
             {/* The Internal Label - Centered absolutely inside the ring */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.15em] mb-1">Total Emissions</span>
+              <span className="text-[12px] font-black text-slate-500 uppercase tracking-[0.15em] mb-1">Total Emissions</span>
               <div className="flex items-baseline leading-none">
                 <span className="text-5xl font-black text-white tracking-tighter">{result.total}</span>
                 <span className="text-lg font-bold text-emerald-500 ml-1">g</span>
               </div>
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mt-1">CO2e</span>
+              <span className="text-[16px] font-bold text-slate-500 uppercase tracking-[0.15em] mt-1">CO₂e</span>
             </div>
           </div>
 
@@ -99,12 +99,12 @@ function EmissionItem({ label, description, value, total, color }) {
     <div className="bg-white/[0.03] p-4 rounded-2xl border border-white/[0.05] hover:bg-white/[0.06] transition-all">
       <div className="flex justify-between items-start mb-2">
         <div>
-          <p className="text-white text-xs font-bold uppercase tracking-wider">{label}</p>
-          <p className="text-[10px] text-slate-500 font-medium">{description}</p>
+          <p className="text-white text-sm font-bold uppercase tracking-wider">{label}</p>
+          <p className="text-[14px] text-slate-500 font-medium">{description}</p>
         </div>
         <div className="text-right">
           <span className="text-lg font-black text-white">{value}g</span>
-          <span className="text-[10px] font-bold text-slate-500 ml-2">({percentage}%)</span>
+          <span className="text-sm font-bold text-slate-500 ml-2">({percentage}%)</span>
         </div>
       </div>
       <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
