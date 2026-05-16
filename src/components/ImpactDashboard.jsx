@@ -56,7 +56,7 @@ export function ImpactDashboard({ projection }) {
     <div className="flex flex-col space-y-6">
       {/* Header */}
       <h3 className="text-2xl font-black text-slate-800 flex items-center gap-3 border-b border-slate-200 pb-4">
-        <Leaf className="text-green-600" size={28} /> Annual Sustainability Forecast
+        <Leaf className="text-green-600" size={28} /> Annual Carbon Footprint
       </h3>
       
       {/* Main Annual Mass Card */}

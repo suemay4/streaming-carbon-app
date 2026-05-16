@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart3, Zap, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
 export function BenchmarkCompare({ benchmarkData, currentYearly }) {
   return (
@@ -8,15 +8,11 @@ export function BenchmarkCompare({ benchmarkData, currentYearly }) {
       <div className="flex items-center justify-between mb-10">
         <div>
           <h3 className="text-2xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
-            <BarChart3 className="text-blue-500" size={24} /> 
-            Resolution Impact
+            Impact of video quality
           </h3>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
+          <p className="text-base text-slate-400 mt-1">
             Compare Potential Savings
           </p>
-        </div>
-        <div className="bg-slate-100 p-2 rounded-xl text-slate-400">
-           <Zap size={20} />
         </div>
       </div>
 
@@ -41,7 +37,7 @@ export function BenchmarkCompare({ benchmarkData, currentYearly }) {
                     )}
                     {isEco && !item.isCurrent && (
                       <span className="bg-emerald-100 text-emerald-700 text-[9px] px-2 py-0.5 rounded-full flex items-center gap-1">
-                        <ShieldCheck size={10} /> BEST FOR EARTH
+                        <ShieldCheck size={10} /> Lowest emissions option
                       </span>
                     )}
                   </span>
@@ -89,9 +85,9 @@ export function BenchmarkCompare({ benchmarkData, currentYearly }) {
       </div>
 
       {/* Footer Insight */}
-      <div className="mt-12 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-        <p className="text-[10px] leading-relaxed text-slate-500 font-medium">
-          <strong className="text-slate-700 uppercase">Tip:</strong> Switching to Standard Definition (360p) can significantly lower the data transfer energy required by network routers and servers[cite: 2].
+      <div className="mt-10 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+        <p className="text-[11px] leading-relaxed text-slate-500 font-medium">
+          <strong className="text-slate-700 uppercase">Tip:</strong> Lower video quality reduces data usage, which means less electricity is used to stream videos.
         </p>
       </div>
     </div>

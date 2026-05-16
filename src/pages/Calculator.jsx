@@ -1,5 +1,5 @@
 import React, { useState } from 'react'; //useRef
-import { calculateFootprint, REGION_FACTORS, DEVICE_PROFILES } from '../utils/carbonLogic';
+import { calculateFootprint, REGION_FACTORS, DEVICE_PROFILES, RESOLUTION_PROFILES } from '../utils/carbonLogic';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import domtoimage from 'dom-to-image-more';
@@ -13,8 +13,6 @@ import { generateCarbonReport } from '../utils/pdfGenerator';
 import { DeviceComparison } from '../components/DeviceComparison';
 
 function Calculator() {
-  // const reportRef = useRef(null);
-
   // 1. Centralized State
   const [region, setRegion] = useState('Peninsular Malaysia');
   const [device, setDevice] = useState('Laptop');
@@ -80,23 +78,29 @@ function Calculator() {
 
     // Session math
     const sessionData = calculateFootprint(mins, resolution, device, region, customBitrate);
-    
-    // Benchmark math (Comparing to other qualities)
-    const scenarios = [
-      { id: '360p', name: 'SD (360p)', color: 'bg-emerald-500' },
-      { id: '1080p', name: 'HD (1080p)', color: 'bg-blue-500' },
-      { id: '4K', name: 'Ultra HD (4K)', color: 'bg-red-500' }
-    ];
 
     // Calculate how many times per year based on user selection
     const timesPerYear = period === 'Daily' ? (frequency * 365) : (frequency * 52);
     const yearlyKg = (sessionData.total * timesPerYear) / 1000;
 
-    const benchmarks = scenarios.map(s => {
-      const data = calculateFootprint(mins, s.id, device, region);
-      const yearly = (data.total * timesPerYear) / 1000;
+    const benchmarks = RESOLUTION_PROFILES.map(profile => {
+      // 1. Calculate the carbon footprint for this specific resolution profile option
+      const alternativeData = calculateFootprint(mins, profile.value, device, region);
+      
+      // 2. Scale it to a yearly value
+      const yearly = (alternativeData.total * timesPerYear) / 1000;
+      
+      // 3. Compute percentage savings relative to the active selection
       const savedPercent = yearlyKg > 0 ? ((yearlyKg - yearly) / yearlyKg * 100).toFixed(0) : 0;
-      return { ...s, yearly, savedPercent, isCurrent: resolution === s.id };
+      
+      // 4. Return an object matching the exactly defined options
+      return { 
+        id: profile.value,        // e.g., '360p', '480p'
+        name: profile.label,      // e.g., '360p (Low Quality)', '480p (Standard Definition)'
+        yearly: yearly,
+        savedPercent: savedPercent,
+        isCurrent: resolution === profile.value 
+      };
     });
 
     // Update state to trigger subcomponents
@@ -109,36 +113,6 @@ function Calculator() {
       trees: (yearlyKg / 21).toFixed(2)
     });
   };
-
-  
-
-  /*const handleDownloadPDF = async () => {
-    const reportElement = document.getElementById('pdf-report-template');
-    if (!reportElement) return;
-
-    alert("Generating clean academic report...");
-
-    try {
-      // We capture the HIDDEN template, not the dashboard
-      const dataUrl = await domtoimage.toPng(reportElement, {
-        width: 800,
-        bgcolor: '#ffffff',
-      });
-
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const imgProps = pdf.getImageProperties(dataUrl);
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`Carbon_Report_${new Date().getTime()}.pdf`);
-    
-      alert("Report Downloaded Successfully!");
-    } catch (error) {
-      console.error("PDF Error:", error);
-      alert("Could not generate report template.");
-    }
-  };*/
 
   const handleReset = () => {
     setResult(null);
