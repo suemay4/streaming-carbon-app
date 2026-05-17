@@ -30,7 +30,7 @@ export const RESOLUTION_PROFILES = [
 // Common range in literature: ~0.01–0.1 kWh/GB
 
 const ENERGY_INTENSITY_DC = 0.0015;  // kWh/GB before 0.015
-const ENERGY_INTENSITY_NET = 0.06; // kWh/GB before 0.015
+const ENERGY_INTENSITY_NET = 0.0185; // kWh/GB before 0.015
 
 
 // const DATA_RATES = { 
