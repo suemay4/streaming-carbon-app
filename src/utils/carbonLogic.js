@@ -29,16 +29,16 @@ export const RESOLUTION_PROFILES = [
 // Empirical: kWh/GB for data centers + networks (global average band, not Malaysia‑specific)
 // Common range in literature: ~0.01–0.1 kWh/GB
 
-const ENERGY_INTENSITY_DC = 0.015;  // kWh/GB
+const ENERGY_INTENSITY_DC = 0.0015;  // kWh/GB before 0.015
 const ENERGY_INTENSITY_NET = 0.06; // kWh/GB before 0.015
 
 
-const DATA_RATES = { 
-  '360p': 0.3, 
-  '720p': 1.2, 
-  '1080p': 2.25, 
-  '4K': 8.0 
-};
+// const DATA_RATES = { 
+//   '360p': 0.3, 
+//   '720p': 1.2, 
+//   '1080p': 2.25, 
+//   '4K': 8.0 
+// };
 
 export const projectEmissions = (sessionGrams, frequency, period) => {
   // frequency is how many times per period (e.g., 5 times a week)
