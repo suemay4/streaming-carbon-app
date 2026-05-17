@@ -15,9 +15,9 @@ import { DeviceComparison } from '../components/DeviceComparison';
 function Calculator() {
   // 1. Centralized State
   const [region, setRegion] = useState('Peninsular Malaysia');
-  const [device, setDevice] = useState('Laptop');
+  const [device, setDevice] = useState('Smartphone');
   const [mins, setMins] = useState(0);
-  const [resolution, setResolution] = useState('1080p');
+  const [resolution, setResolution] = useState('360p');
   const [frequency, setFrequency] = useState(1);
   const [period, setPeriod] = useState('Daily');
   const [result, setResult] = useState(null);
@@ -122,7 +122,9 @@ function Calculator() {
     setCustomBitrate(null);
     setFrequency(1);
     setRegion('Peninsular Malaysia');
+    setResolution('360p');
     setVideoTitle('');
+    setDevice('Smartphone');
   };
 
   // Logic to generate chart data for the sidebar
