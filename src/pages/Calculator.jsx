@@ -136,7 +136,7 @@ function Calculator() {
   } : null;
 
   return (
-    <div style={{ backgroundColor: '#ffffff', color: '#1e293b' }} className="py-12 px-6 max-w-7xl mx-auto space-y-12">
+    <div style={{ color: '#1e293b' }} className="py-12 px-6 max-w-full m-10 space-y-12">
 
       {/* TIER 1: The Input and the Gauge */}
         <div className="grid lg:grid-cols-2 gap-8 items-stretch">
