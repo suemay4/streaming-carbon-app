@@ -35,7 +35,7 @@ function Calculator() {
     setError('');
 
     try {
-      const response = await fetch('https://streaming-carbon-app-backend.onrender.com/analyze', {
+      const response = await fetch('https://streaming-carbon-app-backend.onrender.com/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: videoUrl })
