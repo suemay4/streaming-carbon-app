@@ -19,7 +19,7 @@ export const RESOLUTION_PROFILES = [
   { label: '4K (UHD)', value: '4K', rate: 15.75 }
 ];
 
-const ENERGY_INTENSITY_DC = 0.0015;  // kWh/hr
+const ENERGY_INTENSITY_DC = 0.0015;  // kWh/GB
 const ENERGY_INTENSITY_NET = 0.0185; // kwh/hr
 
 export const projectEmissions = (sessionGrams, frequency, period) => {
