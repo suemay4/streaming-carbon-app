@@ -16,7 +16,7 @@ function Home() {
             <h1 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.1]">
               Your Streaming Streams Have A <br />
               <span className="bg-gradient-to-r from-green-600 via-emerald-500 to-teal-600 bg-clip-text text-transparent">
-                Hidden Carbon Cost.
+                Hidden Carbon Cost. Staging
               </span>
             </h1>
             <p className="text-lg md:text-xl text-slate-500 font-medium leading-relaxed max-w-2xl mx-auto">
