@@ -15,7 +15,7 @@ export const DEVICE_PROFILES = [
 export const RESOLUTION_PROFILES = [
   { label: '360p (SD)', value: '360p', rate: 1.8 },
   { label: '720p (HD)', value: '720p', rate: 2.7 },
-  { label: '1080p (FHD)', value: '1080p', rate: 4.50 },
+  { label: '1080p (FHD)', value: '1080p', rate: 5.40 },
   { label: '4K (UHD)', value: '4K', rate: 15.75 }
 ];
 
