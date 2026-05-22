@@ -147,11 +147,12 @@ function HowItWorks() {
           Device electricity use is estimated using average power consumption values for common devices such as smartphones, laptops, tablets, and TVs.
         </p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Smartphone</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">3.5W</div></div>
-          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Tablet</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">7.0W</div></div>
-          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Mid-Spec Laptop</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">32.5W</div></div>
-          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Smart TV</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">120.0W</div></div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
+          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Smartphone</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">4.5W</div></div>
+          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Tablet</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">6.0W</div></div>
+          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Mid-Spec Laptop</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">42.5W</div></div>
+          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Desktop PC</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">125.0W</div></div>
+          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Smart TV</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">51.0W</div></div>
         </div>
       </div>
 
