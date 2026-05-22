@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import domtoimage from 'dom-to-image-more';
 
-// Import your new subcomponents
+// Import new subcomponents
 import { CalculatorForm } from '../components/CalculatorForm';
 import { EmissionBreak } from '../components/EmissionBreak';
 import { ImpactDashboard } from '../components/ImpactDashboard';
@@ -13,7 +13,7 @@ import { generateCarbonReport } from '../utils/pdfGenerator';
 import { DeviceComparison } from '../components/DeviceComparison';
 
 function Calculator() {
-  // 1. Centralized State
+  // Centralised State
   const [region, setRegion] = useState('Peninsular Malaysia');
   const [device, setDevice] = useState('Smartphone');
   const [mins, setMins] = useState(0);
@@ -46,7 +46,7 @@ function Calculator() {
       const data = await response.json();
       console.log("Backend Data Received:", data) // check f12 for this
 
-      // Auto-update your state variables with real data!
+      // Auto-update state variables with real data
       if (data.durationMins) {
         setVideoTitle(data.title);
         setMins(data.durationMins);
@@ -54,7 +54,7 @@ function Calculator() {
         alert(`Detected: ${data.title}`);
       }
     
-      // Logic to match the resolution to your existing dropdown options
+      // Logic to match the resolution to existing dropdown options
       if (data.resolution.includes('2160') || data.resolution.includes('4K')) setResolution('4K');
       else if (data.resolution.includes('1080')) setResolution('1080p');
       else setResolution('720p');
@@ -67,7 +67,7 @@ function Calculator() {
     }
   };
 
-  // 2. The Main Action Handler
+  // Main Action Handler
   const handleCalculate = () => {
     if (!mins || mins <= 0) {
       setError('Please input streaming minutes to see your impact.');
@@ -90,10 +90,10 @@ function Calculator() {
       // 2. Scale it to a yearly value
       const yearly = (alternativeData.total * timesPerYear) / 1000;
       
-      // 3. Compute percentage savings relative to the active selection
+      // Compute percentage savings relative to the active selection
       const savedPercent = yearlyKg > 0 ? ((yearlyKg - yearly) / yearlyKg * 100).toFixed(0) : 0;
       
-      // 4. Return an object matching the exactly defined options
+      // Return an object matching the exactly defined options
       return { 
         id: profile.value,        // e.g., '360p', '480p'
         name: profile.label,      // e.g., '360p (Low Quality)', '480p (Standard Definition)'
