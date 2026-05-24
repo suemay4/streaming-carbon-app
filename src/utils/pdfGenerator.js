@@ -111,7 +111,7 @@ export const generateCarbonReport = (result, projection, metadata, benchmarkData
   pdf.setTextColor(...colors.slate);
   
   pdf.setFont(undefined, 'bold');
-  pdf.text("BitLeaf: Video Carbon Footprint Calculator", 105, 277, { align: "center" });
+  pdf.text("BitLeaf: Video Streaming Carbon Footprint Calculator", 105, 277, { align: "center" });
   
   pdf.save(`CarbonFootprint_Result_${new Date().getTime()}.pdf`);
 };
