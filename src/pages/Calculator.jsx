@@ -50,19 +50,23 @@ function Calculator() {
       if (data.durationMins) {
         setVideoTitle(data.title);
         setMins(data.durationMins);
-        setCustomBitrate(data.bitrateKbps);
-        alert(`Detected: ${data.title}`);
-      }
-    
-      // Logic to match the resolution to existing dropdown options
-      if (data.resolution.includes('2160') || data.resolution.includes('4K')) {
-        setResolution('4k');
-      } else if (data.resolution.includes('1080')) {
-        setResolution('1080p');
-      } else if (data.resolution.includes('720')) {
-        setResolution('720p');
-      } else {
-        setResolution('360p');
+        
+        // 🌟 FIX 1: Map the incoming data to your actual core matrix lookup keys
+        if (data.resolution.includes('2160') || data.resolution.includes('4K')) {
+          setResolution('2160p_4k');
+        } else if (data.resolution.includes('1440')) {
+          setResolution('1440p');
+        } else if (data.resolution.includes('1080')) {
+          setResolution('1080p');
+        } else if (data.resolution.includes('720')) {
+          setResolution('720p');
+        } else {
+          setResolution('360p_480p'); // Standard baseline matching key
+        }
+        
+        // 🌟 FIX 2: Do NOT set customBitrate here if you want the dropdown to handle the math!
+        // Leaving customBitrate as null ensures the app looks up values directly from RESOLUTION_PROFILES
+        setCustomBitrate(null); 
       }
     
       alert(`Successfully analyzed: ${data.title}`);
