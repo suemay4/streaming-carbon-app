@@ -12,7 +12,7 @@ export const DEVICE_PROFILES = [
   { name: 'Smart TV', power: 51 }
 ];
 
-export const RESOLUTION_PROFILES = [
+export const RESOLUTION_PROFILES = [ //Rate gb/hour
   { label: '360p (SD)', value: '360p', rate: 1.8 },
   { label: '720p (HD)', value: '720p', rate: 2.7 },
   { label: '1080p (FHD)', value: '1080p', rate: 4.50 },
