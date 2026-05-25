@@ -13,7 +13,7 @@ export function CalculatorForm({
   frequency, setFrequency,
   period, setPeriod,
   metadata, onReset,
-  videoTitle
+  videoTitle, setCustomBitrate
 }) {
   // Local state to track which tab is active: 'auto' or 'manual'
   const [activeTab, setActiveTab] = useState('auto');
