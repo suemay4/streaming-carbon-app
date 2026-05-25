@@ -113,11 +113,16 @@ export function CalculatorForm({
                 </div>
                 <div>
                   <label className="text-[11px] text-slate-400 block font-bold uppercase mb-1">
-                    Video Quality (Adjustable)
+                    Video Quality
                   </label>
                   <select
                     value={resolution}
-                    onChange={(e) => setResolution(e.target.value)}
+                    onChange={(e) => {
+                      setResolution(e.target.value);
+                      if (typeof setCustomBitrate === 'function') {
+                        setCustomBitrate(null); // Wipes out '4500' configuration hold
+                      }
+                    }}
                     className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-extrabold text-slate-700 outline-none focus:border-green-500"
                   >
                     {RESOLUTION_PROFILES.map((res) => (
