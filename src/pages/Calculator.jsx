@@ -55,9 +55,15 @@ function Calculator() {
       }
     
       // Logic to match the resolution to existing dropdown options
-      if (data.resolution.includes('2160') || data.resolution.includes('4K')) setResolution('4K');
-      else if (data.resolution.includes('1080')) setResolution('1080p');
-      else setResolution('720p');
+      if (data.resolution.includes('2160') || data.resolution.includes('4K')) {
+        setResolution('4k');
+      } else if (data.resolution.includes('1080')) {
+        setResolution('1080p');
+      } else if (data.resolution.includes('720')) {
+        setResolution('720p');
+      } else {
+        setResolution('360p');
+      }
     
       alert(`Successfully analyzed: ${data.title}`);
     } catch (err) {
