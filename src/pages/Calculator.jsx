@@ -163,7 +163,7 @@ function Calculator() {
             onReset={handleReset} onCalculate={handleCalculate}
             frequency={frequency} setFrequency={setFrequency}
             period={period} setPeriod={setPeriod}
-            videoTitle={videoTitle}
+            videoTitle={videoTitle} setCustomBitrate={setCustomBitrate}
           />
 
           <EmissionBreak result={result} chartData={chartData}/>
