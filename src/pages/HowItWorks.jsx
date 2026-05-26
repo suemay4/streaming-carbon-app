@@ -4,7 +4,7 @@ import { Server, Share2, Laptop, Globe, Info, BookOpen, Layers, BarChart3, HelpC
 function HowItWorks() {
   return (
     <div className="max-w-4xl mx-auto py-16 px-6 space-y-16">
-      {/* 1. ARCHITECTURAL OVERVIEW */}
+      {/* OVERVIEW */}
       <div className="space-y-4">
         <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">How This Calculator Works</h1>
         <p className="text-slate-600 text-lg leading-relaxed">
@@ -36,7 +36,7 @@ function HowItWorks() {
         </details>
       </div>
 
-      {/* 3. THREE-LAYER COMPUTATIONAL SPECTRA */}
+      {/* 3. THREE-LAYER */}
       <div className="space-y-6">
         <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
           <Layers className="text-emerald-500" size={22} />
@@ -44,16 +44,16 @@ function HowItWorks() {
         </h2>
         
         <div className="space-y-4">
-          {/* Data Center */}
+          {/* Data Centre */}
           <div className="flex flex-col md:flex-row gap-5 p-6 bg-white rounded-2xl border border-slate-100 transition-all">
             <div className="p-3 bg-blue-50 text-blue-600 rounded-xl self-start">
               <Server size={24} />
             </div>
             <div className="space-y-2">
-              <h3 className="font-bold text-slate-900 text-lg">E<sub>dc</sub> (Data Center Infrastructure Layer)</h3>
+              <h3 className="font-bold text-slate-900 text-lg">E<sub>dc</sub> (Data Centre Infrastructure Layer)</h3>
               <p className="text-slate-600 text-sm leading-relaxed">
                 Data centers store and deliver the videos you watch. They use electricity for servers, cooling systems, and storage.
-                <span className="font-semibold text-slate-900 mx-1">0.015 kWh/GB</span>transferred based on global cloud efficiency indexes.
+                <span className="font-semibold text-slate-900 mx-1">0.0015 kWh/GB</span>transferred based on global cloud efficiency indexes.
               </p>
               <div className="text-xs font-mono text-blue-700 bg-blue-50/50 p-2 rounded-md w-max">
                 Formula: Data Transferred (GB) × 0.015 kWh/GB
@@ -72,7 +72,7 @@ function HowItWorks() {
                 Streaming data travels through internet networks, including cables,
                 mobile towers, routers, and content delivery systems.
                 All of these use electricity.
-                It is modeled as a constant of <span className="font-semibold text-slate-900 mx-1">0.06 kWh/GB</span>.
+                It is modeled as a constant of <span className="font-semibold text-slate-900 mx-1">0.0185 kWh/hour</span>.
               </p>
               <div className="text-xs font-mono text-purple-700 bg-purple-50/50 p-2 rounded-md w-max">
                 Formula: Data Transferred (GB) × 0.015 kWh/GB
@@ -127,10 +127,10 @@ function HowItWorks() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-slate-600 font-mono">
-                <tr><td className="p-3 font-sans">360p (Low)</td><td className="p-3">0.7 Mbps</td><td className="p-3 text-right">0.31 GB/h</td></tr>
-                <tr><td className="p-3 font-sans">480p (SD)</td><td className="p-3">1.5 Mbps</td><td className="p-3 text-right">0.67 GB/h</td></tr>
-                <tr><td className="p-3 font-sans">1080p (FHD)</td><td className="p-3">5.0 Mbps</td><td className="p-3 text-right">2.25 GB/h</td></tr>
-                <tr><td className="p-3 font-sans">4K (Ultra HD)</td><td className="p-3">25.0 Mbps</td><td className="p-3 text-right">11.25 GB/h</td></tr>
+                <tr><td className="p-3 font-sans">360p (Low)</td><td className="p-3">4 Mbps</td><td className="p-3 text-right">1.8 GB/h</td></tr>
+                <tr><td className="p-3 font-sans">480p (SD)</td><td className="p-3">6 Mbps</td><td className="p-3 text-right">2.7 GB/h</td></tr>
+                <tr><td className="p-3 font-sans">1080p (FHD)</td><td className="p-3">12 Mbps</td><td className="p-3 text-right">5.4 GB/h</td></tr>
+                <tr><td className="p-3 font-sans">4K (Ultra HD)</td><td className="p-3">35 Mbps</td><td className="p-3 text-right">15.75 GB/h</td></tr>
               </tbody>
             </table>
           </div>
@@ -147,11 +147,12 @@ function HowItWorks() {
           Device electricity use is estimated using average power consumption values for common devices such as smartphones, laptops, tablets, and TVs.
         </p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Smartphone</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">3.5W</div></div>
-          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Tablet</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">7.0W</div></div>
-          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Mid-Spec Laptop</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">32.5W</div></div>
-          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Smart TV</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">120.0W</div></div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
+          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Smartphone</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">4.5W</div></div>
+          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Tablet</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">6.0W</div></div>
+          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Mid-Spec Laptop</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">42.5W</div></div>
+          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Desktop PC</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">125.0W</div></div>
+          <div className="p-4 bg-white border border-slate-100 rounded-xl"><div className="text-xs text-slate-500 font-medium">Smart TV</div><div className="text-xl font-mono font-bold text-slate-900 mt-1">51.0W</div></div>
         </div>
       </div>
 

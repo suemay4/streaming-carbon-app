@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import domtoimage from 'dom-to-image-more';
 
-// Import your new subcomponents
+// Import new subcomponents
 import { CalculatorForm } from '../components/CalculatorForm';
 import { EmissionBreak } from '../components/EmissionBreak';
 import { ImpactDashboard } from '../components/ImpactDashboard';
@@ -13,7 +13,7 @@ import { generateCarbonReport } from '../utils/pdfGenerator';
 import { DeviceComparison } from '../components/DeviceComparison';
 
 function Calculator() {
-  // 1. Centralized State
+  // Centralised State
   const [region, setRegion] = useState('Peninsular Malaysia');
   const [device, setDevice] = useState('Smartphone');
   const [mins, setMins] = useState(0);
@@ -35,7 +35,7 @@ function Calculator() {
     setError('');
 
     try {
-      const response = await fetch('https://streaming-carbon-app-backend.onrender.com/', {
+      const response = await fetch('https://streaming-carbon-app-backend.onrender.com/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: videoUrl })
@@ -46,18 +46,28 @@ function Calculator() {
       const data = await response.json();
       console.log("Backend Data Received:", data) // check f12 for this
 
-      // Auto-update your state variables with real data!
+      // Auto-update state variables with real data
       if (data.durationMins) {
         setVideoTitle(data.title);
         setMins(data.durationMins);
-        setCustomBitrate(data.bitrateKbps);
-        alert(`Detected: ${data.title}`);
+        
+        // 🌟 FIX 1: Map the incoming data to your actual core matrix lookup keys
+        if (data.resolution.includes('2160') || data.resolution.includes('4K')) {
+          setResolution('2160p_4k');
+        } else if (data.resolution.includes('1440')) {
+          setResolution('1440p');
+        } else if (data.resolution.includes('1080')) {
+          setResolution('1080p');
+        } else if (data.resolution.includes('720')) {
+          setResolution('720p');
+        } else {
+          setResolution('360p_480p'); // Standard baseline matching key
+        }
+        
+        // 🌟 FIX 2: Do NOT set customBitrate here if you want the dropdown to handle the math!
+        // Leaving customBitrate as null ensures the app looks up values directly from RESOLUTION_PROFILES
+        setCustomBitrate(null); 
       }
-    
-      // Logic to match the resolution to your existing dropdown options
-      if (data.resolution.includes('2160') || data.resolution.includes('4K')) setResolution('4K');
-      else if (data.resolution.includes('1080')) setResolution('1080p');
-      else setResolution('720p');
     
       alert(`Successfully analyzed: ${data.title}`);
     } catch (err) {
@@ -67,7 +77,7 @@ function Calculator() {
     }
   };
 
-  // 2. The Main Action Handler
+  // Main Action Handler
   const handleCalculate = () => {
     if (!mins || mins <= 0) {
       setError('Please input streaming minutes to see your impact.');
@@ -90,10 +100,10 @@ function Calculator() {
       // 2. Scale it to a yearly value
       const yearly = (alternativeData.total * timesPerYear) / 1000;
       
-      // 3. Compute percentage savings relative to the active selection
+      // Compute percentage savings relative to the active selection
       const savedPercent = yearlyKg > 0 ? ((yearlyKg - yearly) / yearlyKg * 100).toFixed(0) : 0;
       
-      // 4. Return an object matching the exactly defined options
+      // Return an object matching the exactly defined options
       return { 
         id: profile.value,        // e.g., '360p', '480p'
         name: profile.label,      // e.g., '360p (Low Quality)', '480p (Standard Definition)'
@@ -153,7 +163,7 @@ function Calculator() {
             onReset={handleReset} onCalculate={handleCalculate}
             frequency={frequency} setFrequency={setFrequency}
             period={period} setPeriod={setPeriod}
-            videoTitle={videoTitle}
+            videoTitle={videoTitle} setCustomBitrate={setCustomBitrate}
           />
 
           <EmissionBreak result={result} chartData={chartData}/>
