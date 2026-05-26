@@ -20,7 +20,7 @@ function Home() {
               </span>
             </h1>
             <p className="text-lg md:text-xl text-slate-500 font-medium leading-relaxed max-w-2xl mx-auto">
-              Discover how your video streaming habits affect the environment using estimated energy use and regional electricity data from Malaysia.
+              Discover how your video streaming habits affect the environment using BitLeaf
             </p>
           </div>
 
