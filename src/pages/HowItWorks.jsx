@@ -6,7 +6,7 @@ function HowItWorks() {
     <div className="max-w-4xl mx-auto py-16 px-6 space-y-16">
       {/* OVERVIEW */}
       <div className="space-y-4">
-        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">How This Calculator Works</h1>
+        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">How BitLeaf Works</h1>
         <p className="text-slate-600 text-lg leading-relaxed">
           Watching videos online uses electricity across data centers, internet networks, and your device.
           This calculator estimates the carbon emissions produced during streaming based on:
