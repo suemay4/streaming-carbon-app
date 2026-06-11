@@ -56,7 +56,7 @@ function HowItWorks() {
                 <span className="font-semibold text-slate-900 mx-1">0.0015 kWh/GB</span>transferred based on global cloud efficiency indexes.
               </p>
               <div className="text-xs font-mono text-blue-700 bg-blue-50/50 p-2 rounded-md w-max">
-                Formula: Data Transferred (GB) × 0.015 kWh/GB
+                Formula: Data Transferred (GB) × 0.0015 kWh/GB
               </div>
             </div>
           </div>
@@ -75,7 +75,7 @@ function HowItWorks() {
                 It is modeled as a constant of <span className="font-semibold text-slate-900 mx-1">0.0185 kWh/hour</span>.
               </p>
               <div className="text-xs font-mono text-purple-700 bg-purple-50/50 p-2 rounded-md w-max">
-                Formula: Data Transferred (GB) × 0.015 kWh/GB
+                Formula: Duration (hour) × 0.0185 kWh/hour
               </div>
             </div>
           </div>
