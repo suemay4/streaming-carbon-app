@@ -1,80 +1,3 @@
-// const express = require('express');
-// const cors = require('cors');
-// const https = require('https');
-// const app = express();
-
-// app.use(cors());
-// app.use(express.json());
-
-// // Paste your copied YouTube API key here
-// const YOUTUBE_API_KEY = "AIzaSyBu5Nf92q96wyGW6ARsy5COkQmNM77mMew";
-
-// // Helper function to extract the 11-character Video ID from any YouTube URL
-// function extractVideoId(url) {
-//   const regExp = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
-//   const match = url.match(regExp);
-//   return (match && match[1].length === 11) ? match[1] : null;
-// }
-
-// app.post('/analyze', (req, res) => {
-//   const { url } = req.body;
-//   const videoId = extractVideoId(url);
-
-//   if (!videoId) {
-//     return res.status(400).json({ error: "Invalid YouTube URL provided." });
-//   }
-
-//   // Target the official Google API endpoint for video metadata
-//   const apiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${YOUTUBE_API_KEY}&part=snippet,contentDetails`;
-
-//   https.get(apiUrl, (apiRes) => {
-//     let data = '';
-//     apiRes.on('data', (chunk) => data += chunk);
-    
-//     apiRes.on('end', () => {
-//       try {
-//         const json = JSON.parse(data);
-//         if (!json.items || json.items.length === 0) {
-//           return res.status(404).json({ error: "Video not found or is private." });
-//         }
-
-//         const videoData = json.items[0];
-//         const title = videoData.snippet.title;
-        
-//         // YouTube API returns duration in ISO 8601 format
-//         const isoDuration = videoData.contentDetails.duration;
-        
-//         // Parse ISO duration into raw minutes
-//         const minutesMatch = isoDuration.match(/(\d+)M/);
-//         const hoursMatch = isoDuration.match(/(\d+)H/);
-        
-//         let durationMins = 0;
-//         if (hoursMatch) durationMins += parseInt(hoursMatch[1]) * 60;
-//         if (minutesMatch) durationMins += parseInt(minutesMatch[1]);
-//         if (durationMins === 0) durationMins = 1; // Fallback for short videos
-
-//         // Return a clean payload back to your React frontend
-//         res.json({
-//           title: title,
-//           durationMins: durationMins,
-//           resolution: '1080p', 
-//           bitrateKbps: 4500    
-//         });
-
-//       } catch (parseError) {
-//         res.status(500).json({ error: "Failed to parse API data." });
-//       }
-//     });
-//   }).on('error', (e) => {
-//     res.status(500).json({ error: "Google API connection error." });
-//   });
-// });
-
-// // Dynamic port configuration for cloud host environments
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, '0.0.0.0', () => {
-//   console.log(`Authorized API Analyzer Server running on port ${PORT}`);
-// });
 const express = require('express');
 const cors = require('cors');
 const https = require('https');
@@ -117,6 +40,7 @@ const dbPool = new Pool({
       CREATE TABLE IF NOT EXISTS calculations (
           id SERIAL PRIMARY KEY,
           region VARCHAR(30) CHECK (region IN ('Peninsular Malaysia', 'Sabah', 'Sarawak')) NOT NULL,
+          total_emissions NUMERIC(10, 2) DEFAULT 0.00,
           timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
@@ -175,7 +99,26 @@ app.get('/api/analytics/dashboard', async (req, res) => {
       if (row.region === 'Sarawak') regionalBreakdown.sarawak = parseInt(row.count);
     });
 
-    res.status(200).json({ totalViews, totalCalculations, regionalBreakdown });
+    const emissionsRes = await dbPool.query(`
+      SELECT region, COALESCE(SUM(total_emissions), 0) as total_grams 
+      FROM calculations 
+      GROUP BY region
+    `);
+
+    const regionalEmissions = { peninsular: 0, sabah: 0, sarawak: 0 };
+    emissionsRes.rows.forEach(row => {
+      if (row.region === 'Peninsular Malaysia') regionalEmissions.peninsular = parseFloat(row.total_grams);
+      if (row.region === 'Sabah') regionalEmissions.sabah = parseFloat(row.total_grams);
+      if (row.region === 'Sarawak') regionalEmissions.sarawak = parseFloat(row.total_grams);
+    });
+
+    const logsRes = await dbPool.query(`
+      SELECT id, region, total_emissions, timestamp 
+      FROM calculations 
+      ORDER BY timestamp DESC LIMIT 10
+    `);
+
+    res.status(200).json({ totalViews, totalCalculations, regionalBreakdown, regionalEmissions, recentLogs: logsRes.rows });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch dashboard metrics" });
@@ -186,7 +129,7 @@ app.get('/api/analytics/dashboard', async (req, res) => {
  * UPDATED /ANALYZE ROUTE
  */
 app.post('/analyze', (req, res) => {
-  const { url, region } = req.body;
+  const { url, region, totalEmissions } = req.body;
   const videoId = extractVideoId(url);
 
   if (!videoId) {
@@ -220,8 +163,9 @@ app.post('/analyze', (req, res) => {
 
         if (region) {
           try {
+            const weightValue = totalEmissions || 0.00;
             // PostgreSQL bindings use $1 placeholder syntax
-            await dbPool.query("INSERT INTO calculations (region) VALUES ($1)", [region]);
+            await dbPool.query("INSERT INTO calculations (region, total_emissions) VALUES ($1, $2)", [region, weightValue]);
           } catch (dbErr) {
             console.error("Database logging error:", dbErr.message);
           }
