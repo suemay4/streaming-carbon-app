@@ -40,7 +40,6 @@ const dbPool = new Pool({
       CREATE TABLE IF NOT EXISTS calculations (
           id SERIAL PRIMARY KEY,
           region VARCHAR(30) CHECK (region IN ('Peninsular Malaysia', 'Sabah', 'Sarawak')) NOT NULL,
-          total_emissions NUMERIC(10, 2) DEFAULT 0.00,
           timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
@@ -99,26 +98,7 @@ app.get('/api/analytics/dashboard', async (req, res) => {
       if (row.region === 'Sarawak') regionalBreakdown.sarawak = parseInt(row.count);
     });
 
-    const emissionsRes = await dbPool.query(`
-      SELECT region, COALESCE(SUM(total_emissions), 0) as total_grams 
-      FROM calculations 
-      GROUP BY region
-    `);
-
-    const regionalEmissions = { peninsular: 0, sabah: 0, sarawak: 0 };
-    emissionsRes.rows.forEach(row => {
-      if (row.region === 'Peninsular Malaysia') regionalEmissions.peninsular = parseFloat(row.total_grams);
-      if (row.region === 'Sabah') regionalEmissions.sabah = parseFloat(row.total_grams);
-      if (row.region === 'Sarawak') regionalEmissions.sarawak = parseFloat(row.total_grams);
-    });
-
-    const logsRes = await dbPool.query(`
-      SELECT id, region, total_emissions, timestamp 
-      FROM calculations 
-      ORDER BY timestamp DESC LIMIT 10
-    `);
-
-    res.status(200).json({ totalViews, totalCalculations, regionalBreakdown, regionalEmissions, recentLogs: logsRes.rows });
+    res.status(200).json({ totalViews, totalCalculations, regionalBreakdown });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch dashboard metrics" });
@@ -129,7 +109,7 @@ app.get('/api/analytics/dashboard', async (req, res) => {
  * UPDATED /ANALYZE ROUTE
  */
 app.post('/analyze', (req, res) => {
-  const { url, region, totalEmissions } = req.body;
+  const { url, region } = req.body;
   const videoId = extractVideoId(url);
 
   if (!videoId) {
@@ -163,9 +143,8 @@ app.post('/analyze', (req, res) => {
 
         if (region) {
           try {
-            const weightValue = totalEmissions || 0.00;
             // PostgreSQL bindings use $1 placeholder syntax
-            await dbPool.query("INSERT INTO calculations (region, total_emissions) VALUES ($1, $2)", [region, weightValue]);
+            await dbPool.query("INSERT INTO calculations (region) VALUES ($1)", [region]);
           } catch (dbErr) {
             console.error("Database logging error:", dbErr.message);
           }
