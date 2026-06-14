@@ -20,7 +20,7 @@ export function VisitorCounterCard() {
 
   if (loading) {
     return (
-      <div className="p-6 rounded-2xl shadow-sm animate-pulse w-full max-w-xs mx-auto">
+      <div className="p-6 animate-pulse w-full max-w-xs mx-auto">
         <div className="h-3 bg-gray-200 rounded w-1/3 mb-2"></div>
         <div className="h-8 bg-gray-200 rounded w-2/3"></div>
       </div>
@@ -28,7 +28,7 @@ export function VisitorCounterCard() {
   }
 
   return (
-    <div className="p-6 shadow-sm w-full max-w-sm mx-auto text-left">
+    <div className="p-6 w-full max-w-sm mx-auto text-left">
       <div className="flex items-baseline space-x-2">
         <p className="text-4xl font-black text-emerald-600 tracking-tight">
           {totalViews.toLocaleString()}
