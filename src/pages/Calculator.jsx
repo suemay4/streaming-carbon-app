@@ -29,6 +29,9 @@ function Calculator() {
   const [customBitrate, setCustomBitrate] = useState(null);
   const [videoTitle, setVideoTitle] = useState('');
 
+  const [recentAudits, setRecentAudits] = useState([]);
+  const [isLogsLoading, setIsLogsLoading] = useState(true);
+
   const handleAnalyze = async () => {
     if (!videoUrl) return;
     setIsAnalyzing(true);
@@ -122,6 +125,10 @@ function Calculator() {
       km: (yearlyKg / 0.12).toFixed(1),
       trees: (yearlyKg / 21).toFixed(2)
     });
+
+    setTimeout(() => {
+      fetchRecentLogs();
+    }, 1000);
   };
 
   const handleReset = () => {
