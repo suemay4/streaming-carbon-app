@@ -76,7 +76,7 @@ export function RegionalImpactBoard() {
         {/* Sarawak */}
         <div className="space-y-1 px-4">
           <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Sarawak</p>
-          <p className="text-2xl sm:text-3xl font-black text-slate-600 tracking-tight transition-all duration-500">
+          <p className="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight transition-all duration-500">
             {formatEmissions(regionalData.sarawak)}
           </p>
         </div>
