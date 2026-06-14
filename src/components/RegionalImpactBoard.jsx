@@ -31,7 +31,7 @@ export function RegionalImpactBoard() {
     if (grams >= 1000) {
       return `${(grams / 1000).toFixed(2)} kg`;
     }
-    return `${grams.toFixed(1)} g`;
+    return `${grams.toFixed(1)} g CO₂e`;
   };
 
   if (loading) {
@@ -46,11 +46,11 @@ export function RegionalImpactBoard() {
         <div className="flex items-center space-x-2">
           <MapPin size={18} className="text-emerald-600 animate-bounce" />
           <h3 className="text-lg font-black text-slate-800 tracking-tight">
-            Cumulative Regional Footprints Audited
+            Regional Carbon Footprints
           </h3>
         </div>
         <p className="text-xs font-semibold text-slate-400 mt-0.5">
-          Real-time combined mass of carbon estimations calculated by platform users per geographic grid.
+          Combined estimated CO₂ emissions from all user calculations, updated in real time.
         </p>
       </div>
 
@@ -63,9 +63,6 @@ export function RegionalImpactBoard() {
           <p className="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight transition-all duration-500">
             {formatEmissions(regionalData.peninsular)}
           </p>
-          <span className="inline-block text-[9px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-100/50">
-            High Carbon Intensity Grid
-          </span>
         </div>
 
         {/* Sabah */}
@@ -74,9 +71,6 @@ export function RegionalImpactBoard() {
           <p className="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight transition-all duration-500">
             {formatEmissions(regionalData.sabah)}
           </p>
-          <span className="inline-block text-[9px] font-bold text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-200/50">
-            Medium Intensity Grid
-          </span>
         </div>
 
         {/* Sarawak */}
@@ -85,9 +79,6 @@ export function RegionalImpactBoard() {
           <p className="text-2xl sm:text-3xl font-black text-emerald-600 tracking-tight transition-all duration-500">
             {formatEmissions(regionalData.sarawak)}
           </p>
-          <span className="inline-block text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100/50">
-            Low Carbon Hydropower Grid
-          </span>
         </div>
 
       </div>
