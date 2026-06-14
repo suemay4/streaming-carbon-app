@@ -121,6 +121,19 @@ function Calculator() {
       km: (yearlyKg / 0.12).toFixed(1),
       trees: (yearlyKg / 21).toFixed(2)
     });
+
+    fetch('https://streaming-carbon-app-backend.onrender.com/api/analytics/calculate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        region: region,                  // Sends active dropdown region ('Sarawak', 'Sabah', etc.)
+        totalEmissions: sessionData.total // Sends the exact calculated footprint weight mass (in grams)
+      })
+    })
+    .then((res) => {
+      if (!res.ok) console.error("Cloud logging sync dropped.");
+    })
+    .catch((err) => console.error("Pipeline network failure:", err));
   };
 
   const handleReset = () => {
