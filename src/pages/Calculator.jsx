@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; //useRef
+import React, { useState, useEffect } from 'react'; //useRef
 import { calculateFootprint, REGION_FACTORS, DEVICE_PROFILES, RESOLUTION_PROFILES } from '../utils/carbonLogic';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
