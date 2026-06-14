@@ -175,20 +175,7 @@ app.get('/api/analytics/dashboard', async (req, res) => {
       if (row.region === 'Sarawak') regionalBreakdown.sarawak = parseInt(row.count);
     });
 
-    const regionalEmissionsRes = await dbPool.query(`
-      SELECT region, COALESCE(SUM(total_emissions), 0) as total_grams 
-      FROM calculations 
-      GROUP BY region
-    `);
-
-    const regionalEmissions = { peninsular: 0, sabah: 0, sarawak: 0 };
-    regionalEmissionsRes.rows.forEach(row => {
-      if (row.region === 'Peninsular Malaysia') regionalEmissions.peninsular = parseFloat(row.total_grams);
-      if (row.region === 'Sabah') regionalEmissions.sabah = parseFloat(row.total_grams);
-      if (row.region === 'Sarawak') regionalEmissions.sarawak = parseFloat(row.total_grams);
-    });
-
-    res.status(200).json({ totalViews, totalCalculations, regionalBreakdown, regionalEmissions });
+    res.status(200).json({ totalViews, totalCalculations, regionalBreakdown });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch dashboard metrics" });
