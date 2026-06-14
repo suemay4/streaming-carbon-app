@@ -188,7 +188,7 @@ app.get('/api/analytics/dashboard', async (req, res) => {
       if (row.region === 'Sarawak') regionalEmissions.sarawak = parseFloat(row.total_grams);
     });
 
-    res.status(200).json({ totalViews, totalCalculations, regionalBreakdown });
+    res.status(200).json({ totalViews, totalCalculations, regionalBreakdown, regionalEmissions });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch dashboard metrics" });
