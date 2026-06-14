@@ -41,7 +41,7 @@ app.post('/analyze', (req, res) => {
         const videoData = json.items[0];
         const title = videoData.snippet.title;
         
-        // YouTube API returns duration in ISO 8601 format (e.g., "PT44M12S")
+        // YouTube API returns duration in ISO 8601 format
         const isoDuration = videoData.contentDetails.duration;
         
         // Parse ISO duration into raw minutes
@@ -57,8 +57,8 @@ app.post('/analyze', (req, res) => {
         res.json({
           title: title,
           durationMins: durationMins,
-          resolution: '1080p', // Core fallback matching your baseline matrix
-          bitrateKbps: 4500    // Matches your 4.50 GB/hour computational rule
+          resolution: '1080p', 
+          bitrateKbps: 4500    
         });
 
       } catch (parseError) {
