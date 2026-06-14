@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; //useRef
+import React, { useState, useEffect } from 'react'; //useRef
 import { calculateFootprint, REGION_FACTORS, DEVICE_PROFILES, RESOLUTION_PROFILES } from '../utils/carbonLogic';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -11,6 +11,7 @@ import { ImpactDashboard } from '../components/ImpactDashboard';
 import { BenchmarkCompare } from '../components/BenchmarkCompare';
 import { generateCarbonReport } from '../utils/pdfGenerator';
 import { DeviceComparison } from '../components/DeviceComparison';
+import { RegionalImpactBoard } from '../components/RegionalImpactBoard';
 
 function Calculator() {
   // Centralised State
@@ -35,10 +36,11 @@ function Calculator() {
     setError('');
 
     try {
+      const activeSessionData = calculateFootprint(mins || 1, resolution, device, region, customBitrate);
       const response = await fetch('https://streaming-carbon-app-backend.onrender.com/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: videoUrl })
+        body: JSON.stringify({ url: videoUrl, region: region, totalEmissions: activeSessionData.total })
       });
 
       if (!response.ok) throw new Error('Analysis failed');
@@ -64,8 +66,6 @@ function Calculator() {
           setResolution('360p_480p'); // Standard baseline matching key
         }
         
-        // 🌟 FIX 2: Do NOT set customBitrate here if you want the dropdown to handle the math!
-        // Leaving customBitrate as null ensures the app looks up values directly from RESOLUTION_PROFILES
         setCustomBitrate(null); 
       }
     
@@ -223,6 +223,10 @@ function Calculator() {
           </button>
         </div>
       )}
+
+      <div className="mt-12">
+        <RegionalImpactBoard />
+      </div>
     </div>
   );
 }
