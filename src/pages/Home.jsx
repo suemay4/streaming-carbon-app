@@ -1,8 +1,15 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Leaf, ShieldCheck, Server, Share2, MonitorSmartphone, HelpCircle, Info } from 'lucide-react';
+import { VisitorCounterCard } from '../components/VisitorCounterCard';
 
 function Home() {
+  useEffect(() => {
+    fetch('https://streaming-carbon-app-backend.onrender.com/api/analytics/landing', { method: 'POST' })
+      .catch((err) => console.log("Analytics stream currently offline."));
+  }, []);
+
   return (
     <div className="w-full min-h-screen text-slate-800 antialiased">
       
