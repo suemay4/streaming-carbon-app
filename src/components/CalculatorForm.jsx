@@ -13,7 +13,7 @@ export function CalculatorForm({
   frequency, setFrequency,
   period, setPeriod,
   metadata, onReset,
-  videoTitle
+  videoTitle, setCustomBitrate
 }) {
   // Local state to track which tab is active: 'auto' or 'manual'
   const [activeTab, setActiveTab] = useState('auto');
@@ -112,8 +112,23 @@ export function CalculatorForm({
                   <p className="text-sm font-extrabold text-emerald-600">{mins} Minutes</p>
                 </div>
                 <div>
-                  <span className="text-[11px] text-slate-400 block font-bold uppercase">Video Quality</span>
-                  <p className="text-sm font-extrabold text-slate-700">{resolution}</p>
+                  <label className="text-[11px] text-slate-400 block font-bold uppercase mb-1">
+                    Video Quality
+                  </label>
+                  <select
+                    value={resolution}
+                    onChange={(e) => {
+                      setResolution(e.target.value);
+                      if (typeof setCustomBitrate === 'function') {
+                        setCustomBitrate(null); // Wipes out '4500' configuration hold
+                      }
+                    }}
+                    className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-extrabold text-slate-700 outline-none focus:border-green-500"
+                  >
+                    {RESOLUTION_PROFILES.map((res) => (
+                      <option key={res.value} value={res.value}>{res.label}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
