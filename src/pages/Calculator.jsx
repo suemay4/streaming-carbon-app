@@ -36,11 +36,10 @@ function Calculator() {
     setError('');
 
     try {
-      const activeSessionData = calculateFootprint(mins || 1, resolution, device, region, customBitrate);
       const response = await fetch('https://streaming-carbon-app-backend.onrender.com/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: videoUrl, region: region, totalEmissions: activeSessionData.total })
+        body: JSON.stringify({ url: videoUrl })
       });
 
       if (!response.ok) throw new Error('Analysis failed');
