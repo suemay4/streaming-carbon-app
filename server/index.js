@@ -44,6 +44,11 @@ const dbPool = new Pool({
       );
     `);
 
+    await client.query(`
+      ALTER TABLE calculations 
+      ADD COLUMN IF NOT EXISTS total_emissions NUMERIC(10, 2) DEFAULT 0.00;
+    `);
+
     console.log("BitLeaf Cloud Tables Verified & Created Successfully.");
     client.release();
   } catch (err) {
@@ -98,6 +103,19 @@ app.get('/api/analytics/dashboard', async (req, res) => {
       if (row.region === 'Sarawak') regionalBreakdown.sarawak = parseInt(row.count);
     });
 
+    const emissionsRes = await dbPool.query(`
+      SELECT region, COALESCE(SUM(total_emissions), 0) as total_grams 
+      FROM calculations 
+      GROUP BY region
+    `);
+
+    const regionalEmissions = { peninsular: 0, sabah: 0, sarawak: 0 };
+    emissionsRes.rows.forEach(row => {
+      if (row.region === 'Peninsular Malaysia') regionalEmissions.peninsular = parseFloat(row.total_grams);
+      if (row.region === 'Sabah') regionalEmissions.sabah = parseFloat(row.total_grams);
+      if (row.region === 'Sarawak') regionalEmissions.sarawak = parseFloat(row.total_grams);
+    });
+
     res.status(200).json({ totalViews, totalCalculations, regionalBreakdown });
   } catch (err) {
     console.error(err);
@@ -143,8 +161,9 @@ app.post('/analyze', (req, res) => {
 
         if (region) {
           try {
+            const targetEmissions = totalEmissions || 0.00;
             // PostgreSQL bindings use $1 placeholder syntax
-            await dbPool.query("INSERT INTO calculations (region) VALUES ($1)", [region]);
+            await dbPool.query("INSERT INTO calculations (region, total_emissions) VALUES ($1, $2)", [region, targetEmissions]);
           } catch (dbErr) {
             console.error("Database logging error:", dbErr.message);
           }
