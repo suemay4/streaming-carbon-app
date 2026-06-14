@@ -31,6 +31,10 @@ function Home() {
             </p>
           </div>
 
+          <div className="flex justify-center pt-2">
+            <VisitorCounterCard />
+          </div>
+
           {/* Core Action Trigger */}
           <div>
             <Link to="/calculator" 
