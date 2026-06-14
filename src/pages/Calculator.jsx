@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; //useRef
+import React, { useState } from 'react'; //useRef
 import { calculateFootprint, REGION_FACTORS, DEVICE_PROFILES, RESOLUTION_PROFILES } from '../utils/carbonLogic';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -29,30 +29,6 @@ function Calculator() {
   const [customBitrate, setCustomBitrate] = useState(null);
   const [videoTitle, setVideoTitle] = useState('');
 
-  const [recentAudits, setRecentAudits] = useState([]);
-  const [isLogsLoading, setIsLogsLoading] = useState(true);
-
-  const fetchRecentLogs = () => {
-    fetch('https://streaming-carbon-app-backend.onrender.com/api/analytics/dashboard')
-      .then((res) => res.json())
-      .then((data) => {
-        // Fallback fallback metrics array layout if database stream is cold
-        setRecentAudits(data.regionalBreakdown ? [
-          { id: 1, region: 'Sarawak', timestamp: new Date().toISOString() },
-          { id: 2, region: 'Peninsular Malaysia', timestamp: new Date(Date.now() - 60000).toISOString() },
-        ] : []);
-        setIsLogsLoading(false);
-      })
-      .catch((err) => {
-        console.error("Audit log synchronization failed:", err);
-        setIsLogsLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    fetchRecentLogs();
-  }, []);
-
   const handleAnalyze = async () => {
     if (!videoUrl) return;
     setIsAnalyzing(true);
@@ -75,7 +51,7 @@ function Calculator() {
         setVideoTitle(data.title);
         setMins(data.durationMins);
         
-        // 🌟 FIX 1: Map the incoming data to your actual core matrix lookup keys
+        // map the incoming data to actual core matrix lookup keys
         if (data.resolution.includes('2160') || data.resolution.includes('4K')) {
           setResolution('2160p_4k');
         } else if (data.resolution.includes('1440')) {
@@ -146,10 +122,6 @@ function Calculator() {
       km: (yearlyKg / 0.12).toFixed(1),
       trees: (yearlyKg / 21).toFixed(2)
     });
-
-    setTimeout(() => {
-      fetchRecentLogs();
-    }, 1000);
   };
 
   const handleReset = () => {
@@ -251,49 +223,6 @@ function Calculator() {
           </button>
         </div>
       )}
-
-      <div className="w-full bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)] text-left space-y-4 mt-12">
-        <div>
-          <h3 className="text-lg font-bold text-slate-800 tracking-tight">
-            Live Regional Calculation Stream
-          </h3>
-          <p className="text-xs font-semibold text-slate-400 mt-0.5">
-            Real-time tracking of calculation parameters logged to cloud database metrics.
-          </p>
-        </div>
-
-        <div className="w-full h-px bg-slate-50"></div>
-
-        {isLogsLoading ? (
-          <div className="h-20 bg-slate-50 rounded-xl animate-pulse"></div>
-        ) : (
-          <div className="space-y-3 max-h-48 overflow-y-auto pr-1">
-            {recentAudits.length === 0 ? (
-              <p className="text-xs font-bold text-slate-400 text-center py-4">No recent activity detected on cloud cluster engine.</p>
-            ) : (
-              recentAudits.map((audit) => (
-                <div key={audit.id} className="flex items-center justify-between text-xs py-3 border-b border-slate-50 last:border-0 hover:bg-slate-50/50 transition-colors px-2 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <span className="flex h-2 w-2 relative">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    <span className="font-bold text-slate-700">Digital Carbon Assessment Executed</span>
-                  </div>
-                  <div className="flex items-center space-x-4 font-bold">
-                    <span className="text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100/50">
-                      {audit.region}
-                    </span>
-                    <span className="text-slate-400 font-medium">
-                      {new Date(audit.timestamp).toLocaleTimeString()}
-                    </span>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        )}
-      </div>
     </div>
   );
 }
