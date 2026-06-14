@@ -17,7 +17,7 @@ const dbPool = new Pool({
 (async () => {
   try {
     const client = await dbPool.connect();
-    console.log("🍃 Connected to Render PostgreSQL Engine. Verifying schemas...");
+    console.log("Connected to Render PostgreSQL Engine. Verifying schemas...");
 
     // Build Traffic Table
     await client.query(`
@@ -116,10 +116,33 @@ app.get('/api/analytics/dashboard', async (req, res) => {
       if (row.region === 'Sarawak') regionalEmissions.sarawak = parseFloat(row.total_grams);
     });
 
-    res.status(200).json({ totalViews, totalCalculations, regionalBreakdown });
+    res.status(200).json({ totalViews, totalCalculations, regionalBreakdown, regionalEmissions });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch dashboard metrics" });
+  }
+});
+
+app.post('/api/analytics/calculate', async (req, res) => {
+  const { region, totalEmissions } = req.body;
+
+  if (!region) {
+    return res.status(400).json({ error: "Missing calculation region parameter." });
+  }
+
+  try {
+    const emissionWeight = totalEmissions || 0.00;
+    
+    await dbPool.query(
+      "INSERT INTO calculations (region, total_emissions) VALUES ($1, $2)", 
+      [region, emissionWeight]
+    );
+
+    console.log(`Cloud Database Logged: ${region} (${emissionWeight}g)`);
+    res.status(200).json({ success: true });
+  } catch (dbErr) {
+    console.error("Database logging error:", dbErr.message);
+    res.status(500).json({ error: "Failed to log calculation metrics row" });
   }
 });
 
@@ -127,7 +150,7 @@ app.get('/api/analytics/dashboard', async (req, res) => {
  * UPDATED /ANALYZE ROUTE
  */
 app.post('/analyze', (req, res) => {
-  const { url, region } = req.body;
+  const { url, region, totalEmissions } = req.body;
   const videoId = extractVideoId(url);
 
   if (!videoId) {
