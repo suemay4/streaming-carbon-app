@@ -44,7 +44,7 @@ function Home() {
         </div>
       </section>
 
-      <section>
+      <section className="w-full bg-gradient-to-r from-emerald-50/80 via-slate-50 to-teal-50/80 py-16 px-4 bg-slate-50 border-t border-b border-slate-100">
         <div className="flex justify-center pt-2">
             <VisitorCounterCard />
         </div>
