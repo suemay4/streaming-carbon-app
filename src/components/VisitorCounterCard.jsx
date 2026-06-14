@@ -28,13 +28,7 @@ export function VisitorCounterCard() {
   }
 
   return (
-    <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-gray-100 w-full max-w-sm mx-auto text-left">
-      <div className="flex items-center space-x-2.5 mb-2">
-        <span className="text-xl">👥</span>
-        <p className="text-gray-500 font-medium text-xs uppercase tracking-wider">
-          Global Platform Reach
-        </p>
-      </div>
+    <div className="p-6 shadow-sm w-full max-w-sm mx-auto text-left">
       <div className="flex items-baseline space-x-2">
         <p className="text-4xl font-black text-emerald-600 tracking-tight">
           {totalViews.toLocaleString()}
