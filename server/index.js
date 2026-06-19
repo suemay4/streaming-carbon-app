@@ -7,9 +7,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+require('dotenv').config();
 // 2. Configure Environment-Aware Database Connection Pool
 const dbPool = new Pool({
-  connectionString: process.env.DATABASE_URL || "postgresql://postgresql_streaming_carbon_app_user:Ch7bbQSb1cKJebq7ZlUIU2k9W8w0rsXV@dpg-d8n1tajtqb8s73cm9cjg-a.singapore-postgres.render.com/postgresql_streaming_carbon_app",
+  connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false } // Required for cloud networks
 });
 
