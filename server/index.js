@@ -57,7 +57,7 @@ const dbPool = new Pool({
   }
 })();
 
-const YOUTUBE_API_KEY = "AIzaSyBu5Nf92q96wyGW6ARsy5COkQmNM77mMew";
+const apiKey = process.env.YOUTUBE_API_KEY;
 
 function extractVideoId(url) {
   const regExp = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
