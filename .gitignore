@@ -23,5 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 
+# Secrets / Environmental Variables
+.env
+server/.env
+
 server/ffmpeg.exe
 server/ffprobe.exe
