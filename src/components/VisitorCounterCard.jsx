@@ -6,7 +6,6 @@ export function VisitorCounterCard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Replace with your actual live backend address from Render
     fetch('https://streaming-carbon-app-backend.onrender.com/api/analytics/dashboard')
       .then((res) => res.json())
       .then((data) => {
