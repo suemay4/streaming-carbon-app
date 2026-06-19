@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "setup": "npm install concurrently --save-dev && npm install && cd server && npm install",
+    "setup": "npm install concurrently --save-dev && npm install && cd server && npm install dotenv && npm install",
     "start": "concurrently \"npm run dev\" \"cd server && npm start\""
   },
   "dependencies": {
