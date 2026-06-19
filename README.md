@@ -1,16 +1,18 @@
-# React + Vite
+# Web-Based Carbon Footprint Calculator and Dashbo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a Single Page Application (SPA) engineered to quantify, visualize carbon emissions parameters associated with video streaming.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Installation & Quick Start Guide
 
-## React Compiler
+To deploy and evaluate this platform locally without manual script copying or configuration modifications, follow these simple steps using your terminal:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
+* **Node.js** (v18.x LTS or higher)
+* Active Internet Connection (Required for cloud-database connection pooling)
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/suemay4/streaming-carbon-app.git](https://github.com/suemay4/streaming-carbon-app.git)
+cd streaming-carbon-app
